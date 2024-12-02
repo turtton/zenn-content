@@ -25,7 +25,7 @@ Build environmentに入り、ビルドを実行します。
 $ nix develop
 $ cargo build
 ```
-> この環境では`cargo run`が利用できないため直接`flash`コマンドを使う必要があることに注意して下さい。詳細は[現状の問題点](#現状の問題点)にて記載しています
+> この環境では(userGroupに`dialogout`を入れていないと)`cargo run`が利用できないため直接`flash`コマンドを使う必要があることに注意して下さい。詳細は[現状の問題点](#現状の問題点)にて記載しています
 
 # 構築手順
 
@@ -156,6 +156,11 @@ channel = "esp"
 
 # 現状の問題点
 
+> userGroupに`dialout`を追加することで解決しました。ESP32を接続し、`cargo run --release`より実行が可能です
+
+::::details 詳細
+
+
 環境構築後、`nix develop`内で`cargo run --release`をしてみると、`/dev/ttyUSBn`へのアクセス権限が無いと言われます。
 それならばと手動で`sudo espflash flash --monitor target/xtensa-esp32-espidf/release/<appname>`とやってみても、そもそもsudoの実行がbuild environmentでは禁止されているため書き込みができません。
 > もしBuild environment内で`/dev/ttyUSBn`にアクセスする方法をご存じの方がいらしたらコメントなどで教えてください。
@@ -189,7 +194,9 @@ $ sudo espflash flash --monitor target/xtensa-esp32-espidf/release/<appname>
 ```
 これでESP32への書き込みができるはずです。
 
+::::
+
+
 # 終わりに
 
-一部問題はあるものの、自身の環境を汚すことなく再現可能な開発環境を手に入れられたので一旦良しとして記事にしました。
 そもそもESP32+Rust開発に関しては情報が少なく、ましてやNixを使う人は少数かと思いますが、DependencyHellや環境汚染の無いクリーンな環境に興味がある方は是非やってみてください。
