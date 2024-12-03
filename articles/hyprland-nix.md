@@ -8,7 +8,7 @@ published: true
 
 # はじめに
 
-今年3月にNixOSに移行した時からPlasma5を使用していたが、元の環境の不満ポイント[^1]が我慢ならなくなってきたのと、[unixporn](https://www.reddit.com/r/unixporn/?rdt=39704)とかを眺めててタイル型WMを使いたい欲が溢れて止まらなくなったので、移行したときの話を適当に書く
+今年3月に[NixOSに移行した時](https://zenn.dev/watagame/scraps/e64841d674d16e)からPlasma5を使用していたが、元の環境の不満ポイント[^1]が我慢ならなくなってきたのと、[unixporn](https://www.reddit.com/r/unixporn/?rdt=39704)とかを眺めててタイル型WMを使いたい欲が溢れて止まらなくなったので、移行したときの話を適当に書く
 
 先に現状を出しておくとこんな感じ
 
@@ -126,7 +126,7 @@ https://qiita.com/Meatwo310/items/947d26adbbddb9a7d098#chromiumelectron%E5%91%A8
 ```nix
 pkg.override { commandLineArgs = [ "--enable-wayland-ime" "--enable-features=UseOzonePlatform" "--ozone-platform=wayland" ]; };
 ```
-無いとかなりやっかいで、私の環境では`pkgs.symlinkをJoin`を利用して実行ファイルと`.desktop`ファイルを上書きしている。といってもこの辺はパッケージによって色々と違いがあるので個別の説明は省略する。
+無いとかなりやっかいで、私の環境では`pkgs.symlinkJoin`を利用して実行ファイルと`.desktop`ファイルを上書きしている。といってもこの辺はパッケージによって色々と違いがあるので個別の説明は省略する。
 上の例と合わせてoverlayの機能を使って対象のパッケージを書き換えた結果は以下に示すので、コード読んでみてほしい。
 https://github.com/turtton/dotnix/blob/main/overlay/force-wayland.nix
 
