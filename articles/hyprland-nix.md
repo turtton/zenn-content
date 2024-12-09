@@ -80,7 +80,11 @@ display-managerとかのやつを使ってもよかったが、せっかくHyprl
 実はアイコンがバグってるけど謎なので放置してる。
 https://github.com/turtton/dotnix/blob/main/home-manager/wm/hyprland/hyprlock.nix
 
-ちなみにこれはただのソフトウェアなのでログイン時はgreetdで自動ログインしてHyprlandが起動した後に呼び出してる。できればpamの設定をいじって入力したパスワード情報をログイン後のあれこれに使いたいが、あんまり情報がなさそうなので放置してる(そのせいでログイン後の1passwordの認証時にもう一度パスワードを入力させられててちょっと微妙。多分libsecretとかの関係？)
+ちなみにこれはただのソフトウェアなのでログイン時はgreetdで自動ログインしてHyprlandが起動した後に呼び出してる。
+
+~~できればpamの設定をいじって入力したパスワード情報をログイン後のあれこれに使いたいが、あんまり情報がなさそうなので放置してる(そのせいでログイン後の1passwordの認証時にもう一度パスワードを入力させられててちょっと微妙。多分libsecretとかの関係？)~~
+> pamの設定いじってhyprlockとloginの項目にGnomeKeyring/Kwallet有効化を追加したところ無事に1Passwordからの余計なパスワード入力が省略された。本当はhyprlockの項目だけで良いような気もするが、動いてるからﾖｼｯ!
+> https://github.com/turtton/dotnix/commit/0a8d7d9d47ac6e10994b18b92fd7b759cbadb559
 
 https://github.com/turtton/dotnix/blob/d4a4b792bd2b576e156a5bd9155da07ecb29752e/os/wm/hyprland.nix#L7
 https://github.com/turtton/dotnix/blob/d4a4b792bd2b576e156a5bd9155da07ecb29752e/hosts/default.nix#L155-L169
