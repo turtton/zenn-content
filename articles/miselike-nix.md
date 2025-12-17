@@ -14,7 +14,7 @@ published: true
 ...冗談はともかく、今はノリと勢いとAIでなんとかなるので雰囲気を掴んでその良さを知ってもらえたらうれしいなって思います。どちらかと言えばNixOS以外のユーザー向けです。
 
 :::message
-以下の内容はNixを導入した上で[Flakesが有効になっている](https://wiki.nixos.org/wiki/Flakes/ja#Setup)こと、[direnv](https://direnv.net)を導入していることを前提としています。
+以下の内容は[Nixを導入](https://github.com/DeterminateSystems/nix-installer)した上で[Flakesが有効になっている](https://wiki.nixos.org/wiki/Flakes/ja#Setup)こと、[direnv](https://direnv.net)を導入していることを前提としています。
 :::
 
 # flake.nixの作成
