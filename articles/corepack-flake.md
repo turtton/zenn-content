@@ -2,7 +2,7 @@
 title: "Nix FlakeでCorepack"
 emoji: "📦️"
 type: "tech"
-topics: ["NixOS", "corepack"]
+topics: ["nixos", "corepack"]
 published: true
 ---
 
