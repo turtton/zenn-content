@@ -1,6 +1,6 @@
 ---
 title: "Nix Flake+direnvでプロジェクトのパッケージ管理"
-emoji: "💡"
+emoji: "👷"
 type: "tech"
 topics: ["nix", "nixflakes", "direnv"]
 published: true
@@ -124,9 +124,7 @@ STATUS  TITLE           WORKFLOW     BRANCH       EVENT        ID           ELAP
 
 実態はただのシェルスクリプトなので、複数行に及ぶ宣言も可能です。またPCにインストールしていない、packages内で追加したパッケージも使えます。
 ```diff nix:flake.nixos
-    (pkgs.writeScriptBin "gh-actions-history" ''
-       gh run list --limit 100
-    '')
+    (pkgs.writeScriptBin "gh-actions-history" "gh run list --limit 100")
 +    pkgs.jq
 +    (pkgs.writeScriptBin "show-api-paths" ''
 +      PATHS=$(jq -r '.paths | keys[]' openapi.json)
@@ -172,4 +170,4 @@ BAR
 こんな感じでmiseでできることは大体できると思います。
 こんなんmiseとか別の便利ツールではできるんやがFlakeではどうなの？みたいなのがあれば教えてください。
 
-応用編として外部flakeを使うと`nix fmt`で全部ファイルのフォーマットができたりとか無限の可能性があるんですが、まあそれはまた別の機会に。
+応用編として外部flakeを使うと`nix fmt`で[全ファイルのフォーマット](https://github.com/numtide/treefmt-nix)ができたりとか無限の可能性があるんですが、まあそれはまた別の機会に。
