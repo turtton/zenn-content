@@ -166,6 +166,37 @@ $ echo $FOO
 BAR
 ```
 
+# 初回セットアップの自動化
+
+ディレクトリに入った時に特定の処理を実行したい場合、`shellHook`を使うと便利です。
+例えば、とりあえず`pnpm install`を実行したい場合、以下のようにします。
+
+```diff nix:flake.nix
+env = {
+...
+};
++ shellHook = ''
++   if [ ! -d "node_modules" ]; then
++     echo "初回セットアップ: pnpm install を実行しています..."
++     pnpm install
++   fi
++ '';
+```
+
+これでディレクトリに入るたびに`node_modules`ディレクトリが存在するか確認し、なければ`pnpm install`を実行します。
+shellの名の通り、普通のシェルスクリプトが書けるので、好きにカスタマイズできます。
+
+# Editor連携
+
+これはNix Flakeの機能というよりdirenvの機能ですが、お好みのEditor/IDEを経由してこれらのパッケージや環境変数にアクセスすることも可能です。
+代表的なプラグインでは以下のようなものがあります。
+
+VSCode: [direnv](https://marketplace.visualstudio.com/items?itemName=mkhl.direnv)
+https://marketplace.visualstudio.com/items?itemName=mkhl.direnv
+
+IDEA: [Direnv Integration](https://plugins.jetbrains.com/plugin/15285-direnv-integration)
+https://plugins.jetbrains.com/plugin/15285-direnv-integration
+
 # おわりに
 こんな感じでmiseでできることは大体できると思います。
 「こんなんmiseとか別の便利ツールではできるんやがFlakeではどうなの？」とか、「ここがよくわからん！」みたいなのがあれば教えてください。
