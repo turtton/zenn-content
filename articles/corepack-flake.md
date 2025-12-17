@@ -50,7 +50,7 @@ https://zenn.dev/eiel/articles/15103684351cb8
 以下のコマンドをcorepack設定済みなプロジェクトで実行してもらえれば`flake.nix`と`.envrc`が配置されます。
 
 ```sh
-nix flake init -t turtton/flake-templates#corepack
+nix flake init -t github:turtton/flake-templates#corepack
 ```
 
 
