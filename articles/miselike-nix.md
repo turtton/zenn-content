@@ -6,7 +6,7 @@ topics: ["nix", "nixflakes", "direnv"]
 published: true
 ---
 
-唐突なんですけど、「mise」人気ですよね。ArchLinuxを利用していた頃は自分も使っていました。
+突然なんですけど、「mise」人気ですよね。ArchLinuxを利用していた頃は自分も使っていました。
 ただ、NixOSを利用するようになってからは、全部Flake+direnvでええやんとなってしまったのでmiseを使わなくなりました。
 利点としては10万を越える豊富なパッケージが利用できることと、高い自由度があると思います。
 まあ「nixわけわかめだからtomlとかで設定できるmiseが良いんじゃ」って言われそうなんですけど、nix言語は[関数の生えたJSONらしい](https://www.reddit.com/r/NixOS/comments/1d4gobt/nix_is_just_json_with_functions/)のでそんな難しくないです。
@@ -122,7 +122,8 @@ STATUS  TITLE           WORKFLOW     BRANCH       EVENT        ID           ELAP
 ...
 ```
 
-実態はただのシェルスクリプトなので、複数行に及ぶ宣言も可能です。またPCにインストールしていない、packages内で追加したパッケージも使えます。
+実態はただのシェルスクリプトなので、複数行に及ぶ宣言も可能です。
+PCにインストールしていない、packages内で追加したパッケージも使えます。
 ```diff nix:flake.nixos
     (pkgs.writeScriptBin "gh-actions-history" "gh run list --limit 100")
 +    pkgs.jq

@@ -6,14 +6,15 @@ topics: ["nixos", "corepack"]
 published: true
 ---
 
-nixのパッケージマネージャは素晴らしいが、フロントエンドのパッケージマネージャのバージョンを細かく合わせるのには向かない。
+nixのパッケージマネージャは素晴らしいんですが、フロントエンドのパッケージマネージャのバージョンを細かく合わせるのには向かない。
 プロジェクトによっては`package.json`の`packageManager`フィールドでバージョンを細かく指定してくれているので、それを尊重したい。
 
-ということでcorepack enableするとNixOS環境では失敗するという話と、その回避方法はこちらが詳しい。
+ということでcorepack enableするとNixOS環境では失敗するという話と、その回避方法はこちらの記事でまとめられています。
 
 https://zenn.dev/eiel/articles/15103684351cb8
 
-これをnix flakeで利用したい。ということで以下のように記載するといける
+これをnix flakeで利用したい。
+ということで以下がflake版です。
 
 ```nix
 {
@@ -45,12 +46,13 @@ https://zenn.dev/eiel/articles/15103684351cb8
 
 ついでに[direnv](https://direnv.net)および[nix-direnv](https://github.com/nix-community/nix-direnv)とか入れておくとディレクトリに入っただけでpathが通るので便利。
 
-とはいえ、毎回上を書くのは面倒なのでテンプレートから使うのが便利。
+とはいえ毎回上を書くのは面倒なのでテンプレートから使うのがおすすめです。
 
-以下のコマンドをcorepack設定済みなプロジェクトで実行してもらえれば`flake.nix`と`.envrc`が配置されます。
+以下のコマンドを`packageManager`が設定済みなプロジェクトで実行してもらえれば`flake.nix`と`.envrc`が配置されます。
 
 ```sh
-nix flake init -t github:turtton/flake-templates#corepack
+$ nix flake init -t github:turtton/flake-templates#corepack
+$ direnv allow
 ```
 
 
