@@ -1,8 +1,8 @@
 ---
-title: "Nix FlakeでCorepack"
-emoji: "📦️"
-type: "tech"
-topics: ["nixos", "corepack"]
+title: Nix FlakeでCorepack
+emoji: 📦️
+type: tech
+topics: [nixos, corepack]
 published: true
 ---
 
@@ -54,7 +54,6 @@ https://zenn.dev/eiel/articles/15103684351cb8
 $ nix flake init -t github:turtton/flake-templates#corepack
 $ direnv allow
 ```
-
 
 ソースはこれ
 https://github.com/turtton/flake-templates/blob/main/templates/corepack/flake.nix

@@ -1,8 +1,8 @@
 ---
-title: "NixOSでPlasma5からHyprlandに移行した話"
-emoji: "🔮"
-type: "tech"
-topics: ["nix", "nixos", "hyprland", "windowmanager", "wayland"]
+title: NixOSでPlasma5からHyprlandに移行した話
+emoji: 🔮
+type: tech
+topics: [nix, nixos, hyprland, windowmanager, wayland]
 published: true
 ---
 
@@ -23,12 +23,12 @@ https://x.com/turtton/status/1855981495934132466
 - FileManager: [Dolphin(qt5)](https://apps.kde.org/dolphin/)
 
 ### 参考にしたプロジェクト
+
 - https://github.com/MrVivekRajan/Hypr-Dots/tree/Type-2?tab=readme-ov-file#spring-city
 - https://github.com/NeshHari/XMonad
 
-現状の問題とかはここでまとめている  
+現状の問題とかはここでまとめている\
 https://github.com/turtton/dotnix/issues/1
-
 
 # StatusBar
 
@@ -36,14 +36,14 @@ Ewwによる完全自作→Waybar→Hyprpanelという流れで、Hyprpanelに�
 
 カスタマイズ性で言えばEwwが最強ではあるが、全部作るのはあまりにもつらいのと、システムトレイがうまく動かなくて断念した後、Waybarを試したがこちらもカスタマイズが思ったようにできなかったので、Hyprpanelで一旦ヨシとした
 
-設定はこれ  
+設定はこれ\
 https://github.com/turtton/dotnix/blob/main/home-manager/wm/hyprland/hyprpanel.nix
 
-現環境はメインモニターのIDが2としてHyprlandに認識されているので、他環境との互換性も考えて0と2の両方にステータスバーを配置している  
+現環境はメインモニターのIDが2としてHyprlandに認識されているので、他環境との互換性も考えて0と2の両方にステータスバーを配置している\
 そこまでカスタマイズの自由度もないので言うことは無いが、日時の表示を良い感じに直しているのと、アップデート表示をいじって使用しているパッケージの深刻(レベル5以上)な脆弱性の数を表示するようにしている
 https://github.com/turtton/dotnix/blob/d4a4b792bd2b576e156a5bd9155da07ecb29752e/home-manager/wm/hyprland/hyprpanel.nix#L74-L75
 
-見た目はこんな感じ  
+見た目はこんな感じ\
 ![](/images/hyprland-nix/vulcount.png)
 
 本当は何のパッケージに何の脆弱性があるのか表示するウィジェットも作りたかったが、まあそれはまたの機会に(誰かEwwで作ってくれないかな)
@@ -65,6 +65,7 @@ https://github.com/turtton/dotnix/blob/d4a4b792bd2b576e156a5bd9155da07ecb29752e/
 # Terminal
 
 本当はWeztermを使いたかったが、現行の最新版では全体がモザイクになってしまうバグがあったのでAlacrittyに落ち着いた。~~Nvidiaゆるせねえ~~
+
 > どうやら最新コミットでは直ってるらしい。ビルドキャッシュをちゃんと保存できるようにして自前ビルドするか、次のリリースが出るかしたらまた試してみる
 
 Plasmaで使ってたテーマに合わせようかとも思ったけど完全再現は無理そうなので無難に[tokyo-nightテーマ](https://github.com/zatchheems/tokyo-night-alacritty-theme/blob/main/tokyo-night.toml)をもとにhome-managerで設定した
@@ -83,6 +84,7 @@ https://github.com/turtton/dotnix/blob/main/home-manager/wm/hyprland/hyprlock.ni
 ちなみにこれはただのソフトウェアなのでログイン時はgreetdで自動ログインしてHyprlandが起動した後に呼び出してる。
 
 ~~できればpamの設定をいじって入力したパスワード情報をログイン後のあれこれに使いたいが、あんまり情報がなさそうなので放置してる(そのせいでログイン後の1passwordの認証時にもう一度パスワードを入力させられててちょっと微妙。多分libsecretとかの関係？)~~
+
 > pamの設定いじってhyprlockとloginの項目にGnomeKeyring/Kwallet有効化を追加したところ無事に1Passwordからの余計なパスワード入力が省略された。本当はhyprlockの項目だけで良いような気もするが、動いてるからﾖｼｯ!
 > https://github.com/turtton/dotnix/commit/0a8d7d9d47ac6e10994b18b92fd7b759cbadb559
 
@@ -94,13 +96,13 @@ https://github.com/turtton/dotnix/blob/d4a4b792bd2b576e156a5bd9155da07ecb29752e/
 
 元々Plasma時代は[Spectacle](https://apps.kde.org/spectacle/)に大変お世話になっていたので、その時の体験を再現するべく色々やった結果、Grimblast+[Swappy](https://github.com/jtheoof/swappy)+[zenity](https://gitlab.gnome.org/GNOME/zenity)で良い感じにした
 https://github.com/turtton/dotnix/blob/d4a4b792bd2b576e156a5bd9155da07ecb29752e/home-manager/wm/hyprland/key-bindings.nix#L102-L107
-スクリーンショットを取る→Swappyで編集→zenityで保存or破棄、という流れ  
+スクリーンショットを取る→Swappyで編集→zenityで保存or破棄、という流れ\
 保存時にGwenviewを開くようにしても良いかもしれない
 
 # FileManager
 
-thunar→Nautilus→Dolphinの流れで落ち着いた。元々thunarは利用している人が多かったため試していたが、テーマの適用が上手くいかなかったためNautilusに移行したものの、元々Dolphinを使っていたので機能不足に感じてしまい、結局Dolphinに戻った。  
-後述するテーマの設定がうまくいっていなかったらNautilusの可能性も全然あった。ちなみにNautilusはプラグイン系を適用するためにhome-managerではなくos側の設定として登録する必要があるので使いたい人は注意。自分も完全に動いたわけではないが、[こんなぐらいの設定](https://github.com/turtton/dotnix/blob/main/os/desktop/nautilus.nix)は最低限必要になる  
+thunar→Nautilus→Dolphinの流れで落ち着いた。元々thunarは利用している人が多かったため試していたが、テーマの適用が上手くいかなかったためNautilusに移行したものの、元々Dolphinを使っていたので機能不足に感じてしまい、結局Dolphinに戻った。\
+後述するテーマの設定がうまくいっていなかったらNautilusの可能性も全然あった。ちなみにNautilusはプラグイン系を適用するためにhome-managerではなくos側の設定として登録する必要があるので使いたい人は注意。自分も完全に動いたわけではないが、[こんなぐらいの設定](https://github.com/turtton/dotnix/blob/main/os/desktop/nautilus.nix)は最低限必要になる\
 Dolphinの方は以下の通り
 https://github.com/turtton/dotnix/blob/main/home-manager/gui/filemanager/dolphin/default.nix
 自分で登録している[jetbrains-dolphin-qt5](https://github.com/turtton/dotnix/blob/main/overlay/jetbrains-dolphin.nix)(表示しているフォルダをJetbrains製品で開くやつ)が便利すぎて手放せなくなってる。そのうちnixpkgsにPR出すかも
@@ -127,9 +129,11 @@ https://qiita.com/Meatwo310/items/947d26adbbddb9a7d098#chromiumelectron%E5%91%A8
 
 具体的にはパッケージの定義されたnixファイルの引数に`commandLineArgs`があるものと無いものがある。
 あるものは以下のように設定する
+
 ```nix
 pkg.override { commandLineArgs = [ "--enable-wayland-ime" "--enable-features=UseOzonePlatform" "--ozone-platform=wayland" ]; };
 ```
+
 無いとかなりやっかいで、私の環境では`pkgs.symlinkJoin`を利用して実行ファイルと`.desktop`ファイルを上書きしている。といってもこの辺はパッケージによって色々と違いがあるので個別の説明は省略する。
 上の例と合わせてoverlayの機能を使って対象のパッケージを書き換えた結果は以下に示すので、コード読んでみてほしい。
 https://github.com/turtton/dotnix/blob/main/overlay/force-wayland.nix
@@ -151,5 +155,4 @@ issueにて試そうとされていた方がいたため、[README](https://gith
 
 よいNixOSライフを！
 
-
-[^1]: [plasma-manager](https://github.com/nix-community/plasma-manager)を使っていたが使っていたテーマの完全再現ができない(ウィンドウボタンのテーマが指定できなくてグローバルテーマに持ってかれる)とか、latteの設定をうまく固定できない、単純にplasma5環境だと新規ウィンドウの生成が遅い、通知が表示されると全体のフレームレーットが一瞬落ちる、など
+[^1]: %5Bplasma-manager%5D(https://github.com/nix-community/plasma-manager)%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6%E3%81%84%E3%81%9F%E3%81%8C%E4%BD%BF%E3%81%A3%E3%81%A6%E3%81%84%E3%81%9F%E3%83%86%E3%83%BC%E3%83%9E%E3%81%AE%E5%AE%8C%E5%85%A8%E5%86%8D%E7%8F%BE%E3%81%8C%E3%81%A7%E3%81%8D%E3%81%AA%E3%81%84(%E3%82%A6%E3%82%A3%E3%83%B3%E3%83%89%E3%82%A6%E3%83%9C%E3%82%BF%E3%83%B3%E3%81%AE%E3%83%86%E3%83%BC%E3%83%9E%E3%81%8C%E6%8C%87%E5%AE%9A%E3%81%A7%E3%81%8D%E3%81%AA%E3%81%8F%E3%81%A6%E3%82%B0%E3%83%AD%E3%83%BC%E3%83%90%E3%83%AB%E3%83%86%E3%83%BC%E3%83%9E%E3%81%AB%E6%8C%81%E3%81%A3%E3%81%A6%E3%81%8B%E3%82%8C%E3%82%8B)%E3%81%A8%E3%81%8B%E3%80%81latte%E3%81%AE%E8%A8%AD%E5%AE%9A%E3%82%92%E3%81%86%E3%81%BE%E3%81%8F%E5%9B%BA%E5%AE%9A%E3%81%A7%E3%81%8D%E3%81%AA%E3%81%84%E3%80%81%E5%8D%98%E7%B4%94%E3%81%ABplasma5%E7%92%B0%E5%A2%83%E3%81%A0%E3%81%A8%E6%96%B0%E8%A6%8F%E3%82%A6%E3%82%A3%E3%83%B3%E3%83%89%E3%82%A6%E3%81%AE%E7%94%9F%E6%88%90%E3%81%8C%E9%81%85%E3%81%84%E3%80%81%E9%80%9A%E7%9F%A5%E3%81%8C%E8%A1%A8%E7%A4%BA%E3%81%95%E3%82%8C%E3%82%8B%E3%81%A8%E5%85%A8%E4%BD%93%E3%81%AE%E3%83%95%E3%83%AC%E3%83%BC%E3%83%A0%E3%83%AC%E3%83%BC%E3%83%83%E3%83%88%E3%81%8C%E4%B8%80%E7%9E%AC%E8%90%BD%E3%81%A1%E3%82%8B%E3%80%81%E3%81%AA%E3%81%A9

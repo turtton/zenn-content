@@ -1,8 +1,8 @@
 ---
-title: "ESP32向けRust開発環境をNixで構築する"
-emoji: "📻"
-type: "tech"
-topics: ["ESP32", "nix", "Rust"]
+title: ESP32向けRust開発環境をNixで構築する
+emoji: 📻
+type: tech
+topics: [ESP32, nix, Rust]
 published: true
 ---
 
@@ -21,11 +21,13 @@ cargo generate --init esp-rs/esp-idf-template cargo # See: https://github.com/es
 ```
 
 Build environmentに入り、ビルドを実行します。
+
 ```shell
 $ nix develop
 $ cargo build
 ```
-> この環境では(userGroupに`dialogout`を入れていないと)`cargo run`が利用できないため直接`flash`コマンドを使う必要があることに注意して下さい。詳細は[現状の問題点](#現状の問題点)にて記載しています
+
+> この環境では(userGroupに`dialogout`を入れていないと)`cargo run`が利用できないため直接`flash`コマンドを使う必要があることに注意して下さい。詳細は[現状の問題点](#%E7%8F%BE%E7%8A%B6%E3%81%AE%E5%95%8F%E9%A1%8C%E7%82%B9)にて記載しています
 
 # 構築手順
 
@@ -57,6 +59,7 @@ channel = "esp"
 
 `esp32 rust nix`とかで雑に検索すると[knarkzel/esp32](https://github.com/knarkzel/esp32)というRepositoryに出会うはずです。
 こちらでは[espressif/idf-rust](https://hub.docker.com/r/espressif/idf-rust)というDockerImageから`.cargo`と`.rustup`ファイルを抽出して提供してくれています。とりあえず[Minimal example](https://github.com/knarkzel/esp32?tab=readme-ov-file#minimal-example)にある通りに`flake.nix`を作成してみましょう。
+
 ```nix:flake.nix
 {
   inputs = {
@@ -88,10 +91,12 @@ channel = "esp"
   };
 }
 ```
+
 これで`nix develop`を実行し、`cargo build`してみると、途中までは順調に進むものの`esp-idf-sys`のコンパイルが失敗してビルドできません。
 エラー内容などで検索してみると[esp-idf-sys](https://github.com/esp-rs/esp-idf-sys)の[#184](https://github.com/esp-rs/esp-idf-sys/issues/184)に辿りつくと思います。
 
 色々と議論されていますが、要はこいつがpython使ったりして外部依存を取ってくるので、FHSを満たしていないNixだと盛大にコケるってことがわかります。issueの最後の方にうまくいったflakeファイルが置かれていますので、今の環境と繋ぎ合わせて以下のようになります。
+
 ```nix:flake.nix
 {
   inputs = {
@@ -150,6 +155,7 @@ channel = "esp"
     };
 }
 ```
+
 > ちなみに元のissueでは`~/.rustup`を消したとかなんとか言ってますが今回の環境と関係ないので無視してもらって構いません。
 
 再度`nix develop`してbuild environmentに入り`cargo build`を実行してみましょう。今度はビルドが通り、無事に環境構築完了です...が、以下のような注意点があります。
@@ -160,9 +166,9 @@ channel = "esp"
 
 ::::details 詳細
 
-
 環境構築後、`nix develop`内で`cargo run --release`をしてみると、`/dev/ttyUSBn`へのアクセス権限が無いと言われます。
 それならばと手動で`sudo espflash flash --monitor target/xtensa-esp32-espidf/release/<appname>`とやってみても、そもそもsudoの実行がbuild environmentでは禁止されているため書き込みができません。
+
 > もしBuild environment内で`/dev/ttyUSBn`にアクセスする方法をご存じの方がいらしたらコメントなどで教えてください。
 
 現状の回避策として、[direnv](https://github.com/direnv/direnv)を使用し、espflashをbuild envの外で使えるようにしてみます。
@@ -187,15 +193,16 @@ use flake .#flash
 ```
 
 以下のようにコマンドをBuild environment**外で**実行します。
+
 ```shell
 $ direnv allow
 # 必要があれば`nix develop`してから`cargo build --release`してbuild environmentから出る
 $ sudo espflash flash --monitor target/xtensa-esp32-espidf/release/<appname>
 ```
+
 これでESP32への書き込みができるはずです。
 
 ::::
-
 
 # 終わりに
 

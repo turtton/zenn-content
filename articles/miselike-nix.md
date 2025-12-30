@@ -1,8 +1,8 @@
 ---
-title: "Nix Flake+direnvでプロジェクトのパッケージ管理"
-emoji: "👷"
-type: "tech"
-topics: ["nix", "nixflakes", "direnv"]
+title: Nix Flake+direnvでプロジェクトのパッケージ管理
+emoji: 👷
+type: tech
+topics: [nix, nixflakes, direnv]
 published: true
 ---
 
@@ -18,6 +18,7 @@ published: true
 :::
 
 # flake.nixの作成
+
 ゼロから書くのは大変面倒なので、テンプレートを使うのが楽です。連携用のシステムである[nix-direnv](https://github.com/nix-community/nix-direnv)には専用のテンプレートが配布されているので、以下でテンプレートから作成します。
 
 ```sh
@@ -25,14 +26,17 @@ $ nix flake new -t github:nix-community/nix-direnv hello-flake
 ```
 
 :::details 今いるディレクトリに展開したい場合
+
 ```sh
 $ nix flake init -t github:nix-community/nix-direnv
 ```
+
 :::
 
 これで`hello-flake`ディレクトリが作成され、その中に`flake.nix`と`.envrc`が配置されます。
 
 とりあえずターミナルで`hello-flake`ディレクトリに移動し、以下のコマンドを実行します。
+
 ```sh
 $ cd hello-flake
 # gitの初期化
@@ -51,9 +55,10 @@ flakeはgitの管理システムに一部依存しており、管理対象とな
 これで`nix develop`相当の処理が実行され、パスが通るようになります。
 
 :::details ざっくりとした挙動
+
 1. `flake.nix`が評価され、`devShells.default`が呼び出される
-2. `devShells.default`で指定されたパッケージがインストール
-3. 環境変数`PATH`にインストールされたパッケージのパスが追加される
+1. `devShells.default`で指定されたパッケージがインストール
+1. 環境変数`PATH`にインストールされたパッケージのパスが追加される
 
 ※パッケージ以外の設定もそんな感じで反映されます。
 
@@ -72,6 +77,7 @@ flakeはgitの管理システムに一部依存しており、管理対象とな
 ```
 
 ターミナルで一度Enterを押すなりするとhelloパッケージがインストールされ、helloコマンドが利用できるようになります。
+
 ```sh
 $ hello
 Hello, world!
@@ -83,12 +89,15 @@ https://search.nixos.org/packages?channel=unstable
 miseとは異なり、細かいバージョンを指定するのは難しいですが、flake.lockにより定義からインストールされるパッケージのバージョンは固定されるので、チームで同じ環境を共有することができます。
 
 更新は以下のコマンドで行います。
+
 ```sh
 $ nix flake update
 ```
 
 # `flake.nix`のフォーマット
+
 プロジェクト管理ではないですが、色々書いていると乱雑になるので、早めに設定しておくと幸せになれます。
+
 ```diff nix:flake.nix
  pkgs = nixpkgs.legacyPackages.${system};
 in
@@ -101,11 +110,13 @@ $ nix fmt
 ```
 
 # カスタムスクリプトの追加
+
 miseのタスクランナーが人気らしいので、flakeでもできるよってのをアピールしておきます。
 
 nixpkgsには、パッケージだけでなく便利なユーティリティもたくさん含まれています。
 その中でも[`pkgs.writeScriptBin`](https://noogle.dev/f/pkgs/writeScriptBin)を使うと簡単にスクリプトを追加できます。
 例えば、GitHub Actionの履歴を取得する場合
+
 ```diff nix:flake.nixos
 packages = [
     pkgs.bashInteractive
@@ -115,6 +126,7 @@ packages = [
 ```
 
 これでまたターミナルでEnterを一度押すと`gh-actions-history`コマンドが利用できるようになります。
+
 ```sh
 $ gh-actions-history
 STATUS  TITLE           WORKFLOW     BRANCH       EVENT        ID           ELAPSED   AGE        
@@ -124,6 +136,7 @@ STATUS  TITLE           WORKFLOW     BRANCH       EVENT        ID           ELAP
 
 実態はただのシェルスクリプトなので、複数行に及ぶ宣言も可能です。
 PCにインストールしていない、packages内で追加したパッケージも使えます。
+
 ```diff nix:flake.nixos
     (pkgs.writeScriptBin "gh-actions-history" "gh run list --limit 100")
 +    pkgs.jq
@@ -136,7 +149,7 @@ PCにインストールしていない、packages内で追加したパッケー�
 ];
 ```
 
-```sh 
+```sh
 # 例： https://gist.github.com/biggates/4955d608379a8b1b3224e815c7dd0dc9
 # $ curl -L -o openapi.json https://gist.githubusercontent.com/biggates/4955d608379a8b1b3224e815c7dd0dc9/raw/0f69ccfb49181f17f2e2c1f5caedc345f1f40af5/petstore_oas3_requestBody_example.json
 $ show-api-paths
@@ -144,7 +157,6 @@ $ show-api-paths
 /pet/findByStatus/MultipleExamples
 /pet/findByStatus/singleExample
 ```
-
 
 # 環境変数の設定
 
@@ -199,8 +211,8 @@ IDEA: [Direnv Integration](https://plugins.jetbrains.com/plugin/15285-direnv-int
 https://plugins.jetbrains.com/plugin/15285-direnv-integration
 
 # おわりに
+
 こんな感じでmiseでできることは大体できると思います。
 「こんなんmiseとか別の便利ツールではできるんやがFlakeではどうなの？」とか、「ここがよくわからん！」みたいなのがあれば教えてください。
 
 応用編として外部flakeを使うと`nix fmt`で[全ファイルのフォーマット](https://github.com/numtide/treefmt-nix)ができたりとか無限の可能性があるんですが、まあそれはまた別の機会に。
-
