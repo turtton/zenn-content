@@ -1,8 +1,8 @@
 ---
-title: "Kotlinの非同期完全に理解した"
-emoji: "💡"
-type: "tech"
-topics: ["kotlin", "async"]
+title: Kotlinの非同期完全に理解した
+emoji: 💡
+type: tech
+topics: [kotlin, async]
 published: false
 ---
 
