@@ -35,5 +35,4 @@ https://github.com/turtton/dotnix/blob/3d380756fee9b0778873fe47ff9d22f1a92de622/
 ちゃんとモジュールとして使えるようになってます。switchする度に署名も自動で行なわれるのでArchLinux時代より便利。
 ちなみに[README](https://github.com/turtton/dotnix/blob/main/nixosModules/README.md)に書いてる`boot.loader.systemd-boot.preloader-signed`の`efiSystemDrive`および`efiPartId`はboot領域のパーティションを指定するためのオプションなので、ご自身の環境に合わせて設定してください。
 
-
 まあここ数ヶ月はもうWindowsの起動すらしてないんですけどね...
