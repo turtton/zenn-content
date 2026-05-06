@@ -86,7 +86,48 @@ Hello, world!
 こんな感じで好きにパッケージを追加することができます。
 有効なパッケージは[公式の検索サイト](https://search.nixos.org/packages?channel=unstable)で探すことができます。
 https://search.nixos.org/packages?channel=unstable
-miseとは異なり、細かいバージョンを指定するのは難しいですが、flake.lockにより定義からインストールされるパッケージのバージョンは固定されるので、チームで同じ環境を共有することができます。
+~~miseとは異なり、細かいバージョンを指定するのは難しいですが~~ https://www.nixhub.io のようなサイトを利用することで使いたいバージョンのnixpkgsのハッシュを特定することもできます。ただ何もしなくてもflake.lockにより定義からインストールされるパッケージのバージョンは固定されるので、チームで同じ環境を共有することができます。
+
+:::details バージョンの固定方法
+
+あらゆるパッケージはnixpkgsの定義に基づいてインストールされるため、nixpkgsのバージョンを固定することで、インストールされるパッケージのバージョンも固定されます。
+例えばgo 1.22を利用したい場合、 https://www.nixhub.io/packages/go のように検索した上で、1.22が定義されているNixpkgs Referenceを特定します。
+今回の場合`dd613136ee91f67e5dba3f3f41ac99ae89c5406b#go_1_22`のように表現されているため、手前がnixpkgsのコミットハッシュ、#以降がパッケージの名前になります。
+これを利用するにはflake.nixを次のように書き換えます。
+
+```diff nix:flake.nix
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
++ inputs.nixpkgs-go.url = "github:NixOS/nixpkgs/dd613136ee91f67e5dba3f3f41ac99ae89c5406b"
+  inputs.systems.url = "github:nix-systems/default";
+---
+-   { nixpkgs, flake-utils, ... }:  
++   { nixpkgs, flake-utils, nixpkgs-go, ... }:  
+---
+      pkgs = nixpkgs.legacyPackages.${system};
++     pkgs-go_1_22 = nixpkgs-go_1_22.legacyPackages.${system};
+    in
+---
+- devShells.default = pkgs.mkShell { packages = [ pkgs.bashInteractive pkgs.hello ]; };
++ devShells.default = pkgs.mkShell { packages = [ pkgs.bashInteractive pkgs-go.go_1_22 ]; };
+```
+
+```shell
+$ go version
+go version go1.22.12 linux/amd64
+```
+
+Referenceがわかると、実際の定義を見ることもできます
+
+https://github.com/NixOS/nixpkgs/blob/dd613136ee91f67e5dba3f3f41ac99ae89c5406b/pkgs/development/compilers/go/1.22.nix
+
+flake.nixがない環境で実行することも可能です。
+
+```shell
+$ nix run github:nixos/nixpkgs/dd613136ee91f67e5dba3f3f41ac99ae89c5406b#go_1_22 -- version
+go version go1.22.12 linux/amd64
+```
+
+:::
 
 更新は以下のコマンドで行います。
 
