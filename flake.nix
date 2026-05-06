@@ -20,17 +20,6 @@
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        corepack =
-          with pkgs;
-          stdenv.mkDerivation {
-            name = "corepack";
-            buildInputs = [ pkgs.nodejs-slim ];
-            phases = [ "installPhase" ];
-            installPhase = ''
-              mkdir -p $out/bin
-              corepack enable --install-directory=$out/bin
-            '';
-          };
       in
       {
         formatter = treefmt-nix.lib.mkWrapper pkgs {
@@ -48,7 +37,7 @@
           mkShell {
             packages = [
               bashInteractive
-              corepack
+              pnpm
             ];
           };
       }
