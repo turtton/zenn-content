@@ -248,8 +248,8 @@ shellの名の通り、普通のシェルスクリプトが書けるので、好
 VSCode: [direnv](https://marketplace.visualstudio.com/items?itemName=mkhl.direnv)
 https://marketplace.visualstudio.com/items?itemName=mkhl.direnv
 
-IDEA: [Direnv Integration](https://plugins.jetbrains.com/plugin/15285-direnv-integration)
-https://plugins.jetbrains.com/plugin/15285-direnv-integration
+IDEA: ~~[Direnv Integration](https://plugins.jetbrains.com/plugin/15285-direnv-integration)~~ こちらの開発が止まった一方で、こちらが動きだしたので今はこっちがおすすめ [better_direnv](https://plugins.jetbrains.com/plugin/19275-better-direnv)
+https://plugins.jetbrains.com/plugin/19275-better-direnv
 
 # おわりに
 
